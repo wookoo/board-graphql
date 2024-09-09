@@ -14,16 +14,16 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public String memberId;
+    private String memberId;
 
     @Setter
-    public String password;
+    private String password;
 
-    public String nickName;
+    private String nickName;
 
-    public String name;
+    private String name;
 
-    public String email;
+    private String email;
 
 
     @Builder(access = AccessLevel.PUBLIC)
