@@ -4,12 +4,13 @@ type Comment{
     member: Member!
 }
 input CreateCommentInput{
+    postId : ID!
     content: String!
 }
 
 extend type Mutation {
-    createComment(input:CreateMemberInput) : Comment
+    createCommentByPostId(input:CreateCommentInput) : Comment
 }
 extend type Query {
-    deleteCommentById(id:ID) : Boolean
+    deleteCommentByPostId(id:ID) : Boolean
 }
