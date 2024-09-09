@@ -5,8 +5,10 @@ import com.example.boardgraphql.jwt.JwtMemberInfo;
 import com.example.boardgraphql.jwt.JwtProvider;
 import com.example.boardgraphql.member.dto.input.CreateMemberInput;
 import com.example.boardgraphql.member.dto.input.LoginInput;
+import com.example.boardgraphql.member.dto.output.MemberOutput;
 import com.example.boardgraphql.member.dto.output.MyInfo;
 import com.example.boardgraphql.member.entity.Member;
+import com.example.boardgraphql.post.dto.output.PostOutput;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,5 +45,14 @@ public class MemberService {
     public MyInfo me(long id) {
         Member member = memberRepository.findById(id).get();
         return MyInfo.from(member);
+    }
+
+    public Member findById(long id) {
+        return memberRepository.findById(id).get();
+    }
+
+    public MemberOutput findById(PostOutput postOutput) {
+        Member member = memberRepository.findById(postOutput.getMemberId()).get();
+        return MemberOutput.from(member);
     }
 }
