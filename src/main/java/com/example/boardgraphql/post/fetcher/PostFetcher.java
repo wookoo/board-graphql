@@ -7,6 +7,7 @@ import com.example.boardgraphql.post.service.PostService;
 import com.example.boardgraphql.security.CustomUserDetail;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
+import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,11 @@ public class PostFetcher {
         CustomUserDetail userDetails = (CustomUserDetail) authentication.getPrincipal();
         long memberId = userDetails.getId();
         return postService.createPost(memberId, postInput);
+    }
+
+    @DgsQuery
+    public PostOutput findPostById(@InputArgument(name = "id") long id) {
+        return postService.findPostById(id);
     }
 
 }
