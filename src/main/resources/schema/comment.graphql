@@ -1,0 +1,15 @@
+type Comment{
+    id : ID!
+    content: String!
+    member: Member!
+}
+input CreateCommentInput{
+    content: String!
+}
+
+extend type Mutation {
+    createComment(input:CreateMemberInput) : Comment
+}
+extend type Query {
+    deleteCommentById(id:ID) : Boolean
+}

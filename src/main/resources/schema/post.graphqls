@@ -1,0 +1,20 @@
+input PostInput{
+    title :String!
+    content : String!
+}
+
+type Post{
+    id : ID!
+    title : String!
+    content: String!
+    member : Member!
+    commentList : [Comment]!
+}
+
+extend type Mutation{
+    createPost(input: PostInput):Post!
+}
+
+extend type Query {
+    findPostById(id:ID): Post!
+}

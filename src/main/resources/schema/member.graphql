@@ -1,0 +1,38 @@
+input CreateMemberInput {
+    password : String!
+    nickName : String!
+    name : String!
+    email : String!
+}
+
+input UpdateMemberInput {
+    password :String,
+    nickName :String,
+    name : String
+}
+
+type Member {
+    id :ID
+    nickName : String!
+    postList : [Post!]!
+    commentList :[Comment!]!
+}
+
+type MyInfo{
+    id : ID
+    nickName : String!
+    name : String!
+    email : String!
+}
+
+extend type Mutation {
+    createMember(input : CreateMemberInput!) : MyInfo!
+    updateMe(input: UpdateMemberInput!) : MyInfo!
+}
+
+
+extend type Query{
+    me : MyInfo!
+}
+
+
