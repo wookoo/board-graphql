@@ -40,4 +40,14 @@ public class CommentService {
     public Comment findById(long id) {
         return commentRepository.findById(id).get();
     }
+
+    public boolean deleteCommentByMemberIdAndId(long memberId, long id) {
+        Member member = memberRepository.findById(memberId).get();
+        Comment comment = commentRepository.findById(id).get();
+        if (member.getMemberId() != comment.getMember().getMemberId()) {
+            return false;
+        }
+        commentRepository.delete(comment);
+        return true;
+    }
 }

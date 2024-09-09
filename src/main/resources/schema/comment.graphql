@@ -11,7 +11,5 @@ input CreateCommentInput{
 
 extend type Mutation {
     createCommentByPostId(input:CreateCommentInput) : Comment
-}
-extend type Query {
-    deleteCommentById(id:ID) : Boolean
+    deleteCommentById(id:ID) :Boolean
 }

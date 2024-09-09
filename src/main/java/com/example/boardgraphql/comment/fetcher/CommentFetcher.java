@@ -10,6 +10,7 @@ import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.InputArgument;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -26,4 +27,14 @@ public class CommentFetcher {
         long memberId = userDetails.getId();
         return commentService.createComment(memberId, commentInput);
     }
+
+    @Secured("ROLE_NORMAL")
+    @DgsMutation
+    public boolean deleteCommentById(@InputArgument(name = "id") long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetail userDetails = (CustomUserDetail) authentication.getPrincipal();
+        long memberId = userDetails.getId();
+        return commentService.deleteCommentByMemberIdAndId(memberId, id);
+    }
+
 }
