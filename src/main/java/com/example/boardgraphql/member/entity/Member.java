@@ -1,9 +1,6 @@
 package com.example.boardgraphql.member.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -25,6 +22,9 @@ public class Member {
 
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
 
     @Builder(access = AccessLevel.PUBLIC)
     private Member(String memberId, String password, String nickName, String name, String email) {
@@ -33,6 +33,7 @@ public class Member {
         this.nickName = nickName;
         this.name = name;
         this.email = email;
+        this.role = Role.NORMAL;
     }
 
 
