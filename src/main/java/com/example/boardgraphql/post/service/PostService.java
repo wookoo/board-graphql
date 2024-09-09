@@ -1,5 +1,7 @@
 package com.example.boardgraphql.post.service;
 
+import com.example.boardgraphql.comment.entity.Comment;
+import com.example.boardgraphql.comment.service.CommentService;
 import com.example.boardgraphql.member.entity.Member;
 import com.example.boardgraphql.member.service.MemberService;
 import com.example.boardgraphql.post.dto.input.PostInput;
@@ -17,6 +19,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final MemberService memberService;
+    private final CommentService commentService;
 
     public List<PostOutput> findByMemberId(long id) {
 
@@ -36,5 +39,11 @@ public class PostService {
 
     public Post findById(long postId) {
         return postRepository.findById(postId).get();
+    }
+
+    public PostOutput findByCommentId(long id) {
+        Comment comment = commentService.findById(id);
+        Post post = comment.getPost();
+        return PostOutput.from(post);
     }
 }
