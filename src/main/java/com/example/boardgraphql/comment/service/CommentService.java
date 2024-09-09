@@ -31,12 +31,14 @@ public class CommentService {
     }
 
     public List<CommentOutput> findByMemberId(long id) {
-        Member member = memberService.findById(id);
-        return commentRepository.findByMember(member).stream().map(CommentOutput::from).toList();
+        return commentRepository.findByMemberId(id).stream().map(CommentOutput::from).toList();
     }
 
     public List<CommentOutput> findByPostId(long id) {
-        Post post = postService.findById(id);
-        return commentRepository.findByPost(post).stream().map(CommentOutput::from).toList();
+        return commentRepository.findByPostId(id).stream().map(CommentOutput::from).toList();
+    }
+
+    public Comment findById(long id) {
+        return commentRepository.findById(id).get();
     }
 }
