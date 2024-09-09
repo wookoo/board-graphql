@@ -2,6 +2,7 @@ package com.example.boardgraphql.comment.entity;
 
 
 import com.example.boardgraphql.member.entity.Member;
+import com.example.boardgraphql.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,10 +24,15 @@ public class Comment {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+
     @Builder(access = AccessLevel.PUBLIC)
-    private Comment(String content, Member member) {
+    private Comment(String content, Member member, Post post) {
         this.content = content;
         this.member = member;
+        this.post = post;
     }
 
 }

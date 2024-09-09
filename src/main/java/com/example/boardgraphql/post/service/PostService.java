@@ -33,4 +33,8 @@ public class PostService {
         postRepository.save(post);
         return PostOutput.from(post);
     }
+
+    public Post findById(long postId) {
+        return postRepository.findById(postId).get();
+    }
 }

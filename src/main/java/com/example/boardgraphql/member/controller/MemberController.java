@@ -1,5 +1,6 @@
 package com.example.boardgraphql.member.controller;
 
+import com.example.boardgraphql.comment.dto.output.CommentOutput;
 import com.example.boardgraphql.member.dto.output.MemberOutput;
 import com.example.boardgraphql.member.service.MemberService;
 import com.example.boardgraphql.post.dto.output.PostOutput;
@@ -16,6 +17,11 @@ public class MemberController {
     @SchemaMapping(typeName = "Post", field = "member")
     public MemberOutput member(PostOutput postOutput) {
         return memberService.findById(postOutput);
+    }
+
+    @SchemaMapping(typeName = "Comment", field = "member")
+    public MemberOutput memberOutput(CommentOutput commentOutput) {
+        return memberService.findById(commentOutput);
     }
 
 }

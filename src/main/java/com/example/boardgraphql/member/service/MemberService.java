@@ -1,6 +1,7 @@
 package com.example.boardgraphql.member.service;
 
 
+import com.example.boardgraphql.comment.dto.output.CommentOutput;
 import com.example.boardgraphql.jwt.JwtMemberInfo;
 import com.example.boardgraphql.jwt.JwtProvider;
 import com.example.boardgraphql.member.dto.input.CreateMemberInput;
@@ -53,6 +54,11 @@ public class MemberService {
 
     public MemberOutput findById(PostOutput postOutput) {
         Member member = memberRepository.findById(postOutput.getMemberId()).get();
+        return MemberOutput.from(member);
+    }
+
+    public MemberOutput findById(CommentOutput commentOutput) {
+        Member member = memberRepository.findById(commentOutput.getMemberId()).get();
         return MemberOutput.from(member);
     }
 }
