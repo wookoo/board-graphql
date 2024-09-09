@@ -2,6 +2,7 @@ type Comment{
     id : ID!
     content: String!
     member: Member!
+    Post: Post!
 }
 input CreateCommentInput{
     postId : ID!
