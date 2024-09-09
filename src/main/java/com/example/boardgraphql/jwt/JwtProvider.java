@@ -3,6 +3,8 @@ package com.example.boardgraphql.jwt;
 import com.example.boardgraphql.member.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +19,9 @@ public class JwtProvider {
     private final SecretKey TOKEN_SECRET_KEY;
     private final String ROLE_PREFIX;
 
-    public JwtProvider(@Value("${spring.jwt.expTime}") long tokenExpireTime) {
+    public JwtProvider(@Value("${spring.jwt.expTime}") long tokenExpireTime, @Value("${spring.jwt.secret}") String jwtSecret) {
         this.TOKEN_EXPIRE_TIME = tokenExpireTime;
-        System.out.println(Jwts.SIG.HS256.key().build());
-        this.TOKEN_SECRET_KEY = Jwts.SIG.HS256.key().build();
+        this.TOKEN_SECRET_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
         this.ROLE_PREFIX = "ROLE";
     }
 
@@ -42,6 +43,6 @@ public class JwtProvider {
         Role role = Role.valueOf((String) claims.get(ROLE_PREFIX));
         return JwtMemberInfo.builder().id(id).role(role).build();
     }
-    
+
 
 }
