@@ -1,5 +1,5 @@
 input CreateMemberInput {
-    id : String!
+    memberId : String!
     password : String!
     nickName : String!
     name : String!
@@ -10,6 +10,11 @@ input UpdateMemberInput {
     password :String,
     nickName :String,
     name : String
+}
+
+input LoginInput{
+    memberId: String!
+    password: String!
 }
 
 type Member {
@@ -34,6 +39,7 @@ extend type Mutation {
 
 extend type Query{
     me : MyInfo!
+    login(input: LoginInput!) : String!
 }
 
 

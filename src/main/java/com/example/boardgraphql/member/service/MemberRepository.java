@@ -8,4 +8,5 @@ import org.springframework.graphql.data.GraphQlRepository;
 @GraphQlRepository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+    Member findByMemberId(String memberId);
 }

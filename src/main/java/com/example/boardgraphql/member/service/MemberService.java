@@ -1,7 +1,10 @@
 package com.example.boardgraphql.member.service;
 
 
+import com.example.boardgraphql.jwt.JwtMemberInfo;
+import com.example.boardgraphql.jwt.JwtProvider;
 import com.example.boardgraphql.member.dto.input.CreateMemberInput;
+import com.example.boardgraphql.member.dto.input.LoginInput;
 import com.example.boardgraphql.member.dto.output.MyInfo;
 import com.example.boardgraphql.member.entity.Member;
 import lombok.AccessLevel;
@@ -16,6 +19,8 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtProvider jwtProvider;
+
     public MyInfo createMember(CreateMemberInput createMemberInput) {
         Member member = createMemberInput.toMember();
 
@@ -26,4 +31,17 @@ public class MemberService {
 
     }
 
+    public String login(LoginInput loginInput) {
+        Member member = memberRepository.findByMemberId(loginInput.getMemberId());
+        JwtMemberInfo jwtMemberInfo = JwtMemberInfo.from(member);
+        if (passwordEncoder.matches(loginInput.getPassword(), member.getPassword())) {
+            return jwtProvider.createToken(jwtMemberInfo);
+        }
+        return null;
+    }
+
+    public MyInfo me(long id) {
+        Member member = memberRepository.findById(id).get();
+        return MyInfo.from(member);
+    }
 }

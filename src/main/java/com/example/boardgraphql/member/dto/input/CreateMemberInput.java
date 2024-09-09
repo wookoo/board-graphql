@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class CreateMemberInput {
 
 
-    private String id;
+    private String memberId;
     private String name;
     private String password;
     private String nickName;
@@ -18,7 +18,7 @@ public class CreateMemberInput {
     public Member toMember() {
 
         return Member.builder()
-                .memberId(id)
+                .memberId(memberId)
                 .name(name)
                 .password(password)
                 .nickName(nickName)
