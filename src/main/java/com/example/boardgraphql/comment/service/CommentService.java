@@ -11,6 +11,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentService {
@@ -26,5 +28,15 @@ public class CommentService {
         Comment comment = commentInput.toComment(post, member);
         commentRepository.save(comment);
         return CommentOutput.from(comment);
+    }
+
+    public List<CommentOutput> findByMemberId(long id) {
+        Member member = memberService.findById(id);
+        return commentRepository.findByMember(member).stream().map(CommentOutput::from).toList();
+    }
+
+    public List<CommentOutput> findByPostId(long id) {
+        Post post = postService.findById(id);
+        return commentRepository.findByPost(post).stream().map(CommentOutput::from).toList();
     }
 }
