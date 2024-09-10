@@ -1,14 +1,14 @@
 package com.example.boardgraphql.member.fetcher;
 
+import com.example.boardgraphql.comment.dto.output.CommentOutput;
 import com.example.boardgraphql.member.dto.input.CreateMemberInput;
 import com.example.boardgraphql.member.dto.input.LoginInput;
+import com.example.boardgraphql.member.dto.output.MemberOutput;
 import com.example.boardgraphql.member.dto.output.MyInfo;
 import com.example.boardgraphql.member.service.MemberService;
+import com.example.boardgraphql.post.dto.output.PostOutput;
 import com.example.boardgraphql.security.CustomUserDetail;
-import com.netflix.graphql.dgs.DgsComponent;
-import com.netflix.graphql.dgs.DgsMutation;
-import com.netflix.graphql.dgs.DgsQuery;
-import com.netflix.graphql.dgs.InputArgument;
+import com.netflix.graphql.dgs.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -21,6 +21,17 @@ public class MemberFetcher {
 
 
     private final MemberService memberService;
+
+    @DgsData(parentType = "Post")
+    public MemberOutput member(PostOutput postOutput) {
+        return memberService.findById(postOutput);
+    }
+
+    @DgsData(parentType = "Comment")
+    public MemberOutput member(CommentOutput commentOutput) {
+        return memberService.findById(commentOutput);
+    }
+
 
     @DgsMutation
     public MyInfo createMember(@InputArgument(name = "input") CreateMemberInput createMemberInput) {
