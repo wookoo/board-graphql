@@ -36,7 +36,9 @@ public class MemberService {
     }
 
     public String login(LoginInput loginInput) {
-        Member member = memberRepository.findByMemberId(loginInput.getMemberId());
+        Member member = memberRepository.findByMemberId(loginInput.getMemberId()).orElseThrow(
+                DgsEntityNotFoundException::new
+        );
         JwtMemberInfo jwtMemberInfo = JwtMemberInfo.from(member);
         if (passwordEncoder.matches(loginInput.getPassword(), member.getPassword())) {
             return jwtProvider.createToken(jwtMemberInfo);
