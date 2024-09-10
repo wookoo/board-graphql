@@ -7,6 +7,7 @@ import com.example.boardgraphql.member.entity.Member;
 import com.example.boardgraphql.member.service.MemberRepository;
 import com.example.boardgraphql.post.entity.Post;
 import com.example.boardgraphql.post.service.PostRepository;
+import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,8 @@ public class CommentService {
     private final PostRepository postRepository;
 
     public CommentOutput createComment(long memberId, CommentInput commentInput) {
-        Member member = memberRepository.findById(memberId).get();
-        Post post = postRepository.findById(commentInput.getPostId()).get();
+        Member member = memberRepository.findById(memberId).orElseThrow(DgsEntityNotFoundException::new);
+        Post post = postRepository.findById(commentInput.getPostId()).orElseThrow(DgsEntityNotFoundException::new);
         Comment comment = commentInput.toComment(post, member);
         commentRepository.save(comment);
         return CommentOutput.from(comment);
@@ -38,13 +39,13 @@ public class CommentService {
     }
 
     public Comment findById(long id) {
-        return commentRepository.findById(id).get();
+        return commentRepository.findById(id).orElseThrow(DgsEntityNotFoundException::new);
     }
 
     public boolean deleteCommentByMemberIdAndId(long memberId, long id) {
-        Member member = memberRepository.findById(memberId).get();
-        Comment comment = commentRepository.findById(id).get();
-        if (member.getMemberId() != comment.getMember().getMemberId()) {
+        Member member = memberRepository.findById(memberId).orElseThrow(DgsEntityNotFoundException::new);
+        Comment comment = commentRepository.findById(id).orElseThrow(DgsEntityNotFoundException::new);
+        if (member.getId() != comment.getMember().getId()) {
             return false;
         }
         commentRepository.delete(comment);

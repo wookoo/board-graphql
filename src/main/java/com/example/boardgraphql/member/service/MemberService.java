@@ -10,6 +10,7 @@ import com.example.boardgraphql.member.dto.output.MemberOutput;
 import com.example.boardgraphql.member.dto.output.MyInfo;
 import com.example.boardgraphql.member.entity.Member;
 import com.example.boardgraphql.post.dto.output.PostOutput;
+import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,21 +45,21 @@ public class MemberService {
     }
 
     public MyInfo me(long id) {
-        Member member = memberRepository.findById(id).get();
+        Member member = memberRepository.findById(id).orElseThrow(DgsEntityNotFoundException::new);
         return MyInfo.from(member);
     }
 
-    public Member findById(long id) {
-        return memberRepository.findById(id).get();
-    }
-
     public MemberOutput findById(PostOutput postOutput) {
-        Member member = memberRepository.findById(postOutput.getMemberId()).get();
+        Member member = memberRepository.findById(postOutput.getMemberId()).orElseThrow(
+                DgsEntityNotFoundException::new
+        );
         return MemberOutput.from(member);
     }
 
     public MemberOutput findById(CommentOutput commentOutput) {
-        Member member = memberRepository.findById(commentOutput.getMemberId()).get();
+        Member member = memberRepository.findById(commentOutput.getMemberId()).orElseThrow(
+                DgsEntityNotFoundException::new
+        );
         return MemberOutput.from(member);
     }
 }

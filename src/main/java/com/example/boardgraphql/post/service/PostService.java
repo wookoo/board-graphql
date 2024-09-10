@@ -7,6 +7,7 @@ import com.example.boardgraphql.member.service.MemberRepository;
 import com.example.boardgraphql.post.dto.input.PostInput;
 import com.example.boardgraphql.post.dto.output.PostOutput;
 import com.example.boardgraphql.post.entity.Post;
+import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,18 +28,25 @@ public class PostService {
     }
 
     public PostOutput findPostById(long id) {
-        return PostOutput.from(postRepository.findById(id).get());
+        Post post = postRepository.findById(id).orElseThrow(
+                DgsEntityNotFoundException::new
+        );
+        return PostOutput.from(post);
     }
 
     public PostOutput createPost(long memberId, PostInput postInput) {
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                DgsEntityNotFoundException::new
+        );
         Post post = postInput.toPost(member);
         postRepository.save(post);
         return PostOutput.from(post);
     }
-    
+
     public PostOutput findByCommentId(long id) {
-        Comment comment = commentRepository.findById(id).get();
+        Comment comment = commentRepository.findById(id).orElseThrow(
+                DgsEntityNotFoundException::new
+        );
         Post post = comment.getPost();
         return PostOutput.from(post);
     }

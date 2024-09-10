@@ -10,6 +10,7 @@ import com.example.boardgraphql.post.dto.output.PostOutput;
 import com.example.boardgraphql.security.CustomUserDetail;
 import com.netflix.graphql.dgs.*;
 import com.netflix.graphql.dgs.internal.DgsWebMvcRequestData;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -27,12 +28,14 @@ public class MemberFetcher {
     @DgsData(parentType = "Post", field = "member")
     public MemberOutput memberByPost(DgsDataFetchingEnvironment dgs) {
         PostOutput postOutput = dgs.getSource();
+        assert postOutput != null;
         return memberService.findById(postOutput);
     }
 
     @DgsData(parentType = "Comment", field = "member")
     public MemberOutput memberByComment(DgsDataFetchingEnvironment dgs) {
         CommentOutput commentOutput = dgs.getSource();
+        assert commentOutput != null;
         return memberService.findById(commentOutput);
     }
 
@@ -59,8 +62,12 @@ public class MemberFetcher {
         String token = memberService.login(loginInput);
 
         DgsWebMvcRequestData requestData = (DgsWebMvcRequestData) dgs.getDgsContext().getRequestData();
+        assert requestData != null;
         ServletWebRequest webRequest = (ServletWebRequest) requestData.getWebRequest();
-        webRequest.getResponse().setHeader("Authorization", "Bearer " + token);
+        assert webRequest != null;
+        HttpServletResponse httpServletResponse = webRequest.getResponse();
+        assert httpServletResponse != null;
+        httpServletResponse.setHeader("Authorization", "Bearer " + token);
 
         return token;
     }
