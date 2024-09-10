@@ -9,11 +9,13 @@ import com.example.boardgraphql.member.service.MemberService;
 import com.example.boardgraphql.post.dto.output.PostOutput;
 import com.example.boardgraphql.security.CustomUserDetail;
 import com.netflix.graphql.dgs.*;
+import com.netflix.graphql.dgs.internal.DgsWebMvcRequestData;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.request.ServletWebRequest;
 
 @DgsComponent
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,8 +53,16 @@ public class MemberFetcher {
     }
 
     @DgsQuery
-    public String login(@InputArgument(name = "input") LoginInput loginInput) {
-        return memberService.login(loginInput);
+    public String login(@InputArgument(name = "input") LoginInput loginInput,
+                        DgsDataFetchingEnvironment dgs) {
+
+        String token = memberService.login(loginInput);
+
+        DgsWebMvcRequestData requestData = (DgsWebMvcRequestData) dgs.getDgsContext().getRequestData();
+        ServletWebRequest webRequest = (ServletWebRequest) requestData.getWebRequest();
+        webRequest.getResponse().setHeader("Authorization", "Bearer " + token);
+
+        return token;
     }
 
 
