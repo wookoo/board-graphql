@@ -7,10 +7,7 @@ import com.example.boardgraphql.comment.service.CommentService;
 import com.example.boardgraphql.member.dto.output.MemberOutput;
 import com.example.boardgraphql.post.dto.output.PostOutput;
 import com.example.boardgraphql.security.CustomUserDetail;
-import com.netflix.graphql.dgs.DgsComponent;
-import com.netflix.graphql.dgs.DgsData;
-import com.netflix.graphql.dgs.DgsMutation;
-import com.netflix.graphql.dgs.InputArgument;
+import com.netflix.graphql.dgs.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -25,14 +22,15 @@ public class CommentFetcher {
     private final CommentService commentService;
 
 
-    @DgsData(parentType = "Member")
-    public List<CommentOutput> commentList(MemberOutput memberOutput) {
-
+    @DgsData(parentType = "Member", field = "commentList")
+    public List<CommentOutput> commentListByMember(DgsDataFetchingEnvironment dgs) {
+        MemberOutput memberOutput = dgs.getSource();
         return commentService.findByMemberId(memberOutput.getId());
     }
 
     @DgsData(parentType = "Post")
-    public List<CommentOutput> commentList(PostOutput postOutput) {
+    public List<CommentOutput> commentList(DgsDataFetchingEnvironment dgs) {
+        PostOutput postOutput = dgs.getSource();
         return commentService.findByPostId(postOutput.getId());
     }
 

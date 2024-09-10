@@ -22,12 +22,14 @@ public class PostFetcher {
     private final PostService postService;
 
     @DgsData(parentType = "Comment")
-    public PostOutput post(CommentOutput commentOutput) {
+    public PostOutput post(DgsDataFetchingEnvironment dgs) {
+        CommentOutput commentOutput = dgs.getSource();
         return postService.findByCommentId(commentOutput.getId());
     }
 
     @DgsData(parentType = "Member")
-    public List<PostOutput> postList(MemberOutput memberOutput) {
+    public List<PostOutput> postList(DgsDataFetchingEnvironment dgs) {
+        MemberOutput memberOutput = dgs.getSource();
         return postService.findByMemberId(memberOutput.getId());
     }
 

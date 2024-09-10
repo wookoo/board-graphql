@@ -22,13 +22,15 @@ public class MemberFetcher {
 
     private final MemberService memberService;
 
-    @DgsData(parentType = "Post")
-    public MemberOutput member(PostOutput postOutput) {
+    @DgsData(parentType = "Post", field = "member")
+    public MemberOutput memberByPost(DgsDataFetchingEnvironment dgs) {
+        PostOutput postOutput = dgs.getSource();
         return memberService.findById(postOutput);
     }
 
-    @DgsData(parentType = "Comment")
-    public MemberOutput member(CommentOutput commentOutput) {
+    @DgsData(parentType = "Comment", field = "member")
+    public MemberOutput memberByComment(DgsDataFetchingEnvironment dgs) {
+        CommentOutput commentOutput = dgs.getSource();
         return memberService.findById(commentOutput);
     }
 
