@@ -3,7 +3,7 @@ input CreateMemberInput {
     password : String!
     nickName : String!
     name : String!
-    email : String!
+    email : Email!
 }
 
 input UpdateMemberInput {

@@ -6,5 +6,7 @@ type Mutation {
 
 }
 type Query{
-    
+
 }
+
+scalar Email
