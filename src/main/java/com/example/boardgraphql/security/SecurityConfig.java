@@ -36,6 +36,7 @@ public class SecurityConfig {
                 )
                 .formLogin(AbstractHttpConfigurer::disable);
         http.addFilterBefore(new JwtFilter(jwtProvider, customUserService), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

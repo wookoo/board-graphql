@@ -30,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
             //JWT 유효성 검증
-            if (true) {
+            if (jwtProvider.isValidToken(token)) {
                 JwtMemberInfo jwtMemberInfo = jwtProvider.getJwtMemberinfo(token);
 
                 //유저와 토큰 일치 시 userDetails 생성

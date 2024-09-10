@@ -1,10 +1,10 @@
 package com.example.boardgraphql.jwt;
 
 import com.example.boardgraphql.member.entity.Role;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -45,4 +45,14 @@ public class JwtProvider {
     }
 
 
+    public boolean isValidToken(String token) {
+
+        try {
+            Jwts.parser().verifyWith(TOKEN_SECRET_KEY).build().parseSignedClaims(token).getPayload();
+            return true;
+        } catch (SecurityException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException |
+                 IllegalArgumentException ignored) {
+        }
+        return false;
+    }
 }
